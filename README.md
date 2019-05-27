@@ -1,4 +1,6 @@
-#源工程传送门：[https://github.com/sfyc23/EverydayWechat)。
+# 源工程传送门：
+
+Github: [https://github.com/sfyc23/EverydayWechat](https://github.com/sfyc23/EverydayWechat)。
 
 本版本添加了图灵机器人自动聊天功能，使用需在GFWeather.py getResponse方法中配置apiKey,可到图灵官网免费申请。
 （ps:为什么没有抽取到配置文件里？因为我的python水平实在渣渣啊……(╥╯^╰╥)）
