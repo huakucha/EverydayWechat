@@ -6,7 +6,9 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 import time
 import city_dict
 import yaml
-
+from itchat.content import *
+import json
+import threading
 
 class gfweather:
     headers = {
@@ -53,6 +55,9 @@ class gfweather:
 
         hour, minute = [int(x) for x in alarm_timed.split(':')]
         return girlfriend_list, hour, minute, dictum_channel
+		
+    def itchatRun(self):
+        itchat.run();		
 
     def is_online(self, auto_login=False):
         '''
@@ -84,13 +89,16 @@ class gfweather:
             # 命令行显示登录二维码
             # itchat.auto_login(enableCmdQR=True)
             itchat.auto_login()
+            #itchat.run()
             if online():
                 print('登录成功')
                 return True
         else:
             print('登录成功')
             return False
-
+			
+	
+		
     def run(self):
         '''
         主运行入口
@@ -113,8 +121,11 @@ class gfweather:
         # 每天9：30左右给女朋友发送每日一句
         scheduler.add_job(self.start_today_info, 'cron', hour=self.alarm_hour, minute=self.alarm_minute)
         # 每隔2分钟发送一条数据用于测试。
-        # scheduler.add_job(self.start_today_info, 'interval', seconds=30)
+        scheduler.add_job(self.start_today_info, 'interval', seconds=10800)
+        t = threading.Thread(target=self.itchatRun, name='LoopThread')
+        t.start()
         scheduler.start()
+        t.join()
 
     def start_today_info(self, is_test=False):
         '''
@@ -186,10 +197,46 @@ class gfweather:
         print('获取格言信息..')
         user_url = 'http://wufazhuce.com/'
         resp = requests.get(user_url, headers=self.headers)
-        soup_texts = BeautifulSoup(resp.text, 'lxml')
+        soup_texts = BeautifulSoup(resp.text, 'html.parser')
         # 『one -个』 中的每日一句
         every_msg = soup_texts.find_all('div', class_='fp-one-cita')[0].find('a').text
         return every_msg + "\n"
+
+    @staticmethod
+    def getResponse(msg):
+        url = "http://openapi.tuling123.com/openapi/api/v2"
+        data = {
+            "reqType":0,
+            "perception": {
+                "inputText": {
+					"text": msg
+                },
+				"inputImage": {
+					"url": "imageUrl"
+                }
+            },
+            "userInfo": {
+                # 图灵机器人apiKey,需官网申请
+				"apiKey": "",
+				"userId": ""
+            }
+        }
+        data = json.dumps(data)
+        r = requests.post(url,data).json()
+        return r['results'][0]['values']['text']
+		
+		
+    @itchat.msg_register([TEXT, MAP, CARD, NOTE, SHARING])
+    def text_reply(msg):
+        try:
+            print(msg.items())
+            #return msg.get('Content','hello')
+            return gfweather.getResponse(msg.get('Content','hello'))
+        except Exception as e:
+            print (str(e))
+            return "我还不知道哦"
+			
+		
 
     def get_weather_info(self, dictum_msg='', city_code='101030100', start_date='2018-01-01', sweet_words='来自最爱你的我'):
         '''
