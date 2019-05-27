@@ -1,3 +1,13 @@
+#源工程传送门：[https://github.com/sfyc23/EverydayWechat)。
+
+本版本添加了图灵机器人自动聊天功能，使用需在GFWeather.py getResponse方法中配置apiKey,可到图灵官网免费申请。
+（ps:为什么没有抽取到配置文件里？因为我的python水平实在渣渣啊……(╥╯^╰╥)）
+
+### 待优化功能
+- 配置抽取到配置文件
+- 群聊功能
+
+
 # 用 Python + itchat 写一个爬虫脚本每天定时给多个女友发给微信暖心话
 
 ## 项目介绍：
