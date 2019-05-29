@@ -248,7 +248,7 @@ class gfweather:
         :return: 需要发送的话。
         '''
         print('获取天气信息..')
-        weather_url = f'http://t.weather.sojson.com/api/weather/city/{city_code}'
+        weather_url = f'http://t.weather.itboy.net/api/weather/city/{city_code}'
         resp = requests.get(url=weather_url)
         if resp.status_code == 200 and self.isJson(resp) and resp.json().get('status') == 200:
             weatherJson = resp.json()
