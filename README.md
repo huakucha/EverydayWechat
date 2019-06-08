@@ -5,6 +5,9 @@ Github: [https://github.com/sfyc23/EverydayWechat](https://github.com/sfyc23/Eve
 本版本添加了图灵机器人自动聊天功能，使用需在GFWeather.py getResponse方法中配置apiKey,可到图灵官网免费申请。
 （ps:为什么没有抽取到配置文件里？因为我的python水平实在渣渣啊……(╥╯^╰╥)）
 
+2019年06月08日更新：
+因图灵接口免费版次数限制，新增aikf机器人接口为默认问答接口
+
 ### 待优化功能
 - 配置抽取到配置文件
 - 群聊功能

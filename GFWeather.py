@@ -4,11 +4,13 @@ from bs4 import BeautifulSoup
 import itchat
 from apscheduler.schedulers.blocking import BlockingScheduler
 import time
+import datetime
 import city_dict
 import yaml
 from itchat.content import *
 import json
 import threading
+import re
 
 class gfweather:
     headers = {
@@ -224,6 +226,18 @@ class gfweather:
         data = json.dumps(data)
         r = requests.post(url,data).json()
         return r['results'][0]['values']['text']
+
+    @staticmethod
+    def getResponseAikf(msg):
+        print(msg)
+        t = time.time()
+        t = str(int(round(t * 1000)))
+        url = "http://www.aikf.com/ask/getAnswer.htm?&reqtype=1&tenantId=78837bf4eb9a4e068c678eb31b3da4c2&ques="+msg+"&_="+t
+        r = requests.get(url).json()
+        answer = r['text']['content']
+        dr = re.compile(r'<[^>]+>',re.S)
+        dd = dr.sub('',answer)
+        return dd
 		
 		
     @itchat.msg_register([TEXT, MAP, CARD, NOTE, SHARING])
@@ -231,7 +245,7 @@ class gfweather:
         try:
             print(msg.items())
             #return msg.get('Content','hello')
-            return gfweather.getResponse(msg.get('Content','hello'))
+            return gfweather.getResponseAikf(msg.get('Content','hello'))
         except Exception as e:
             print (str(e))
             return "我还不知道哦"
