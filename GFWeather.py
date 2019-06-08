@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import itchat
 from apscheduler.schedulers.blocking import BlockingScheduler
 import time
-import datetime
 import city_dict
 import yaml
 from itchat.content import *

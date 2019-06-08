@@ -17,8 +17,8 @@ def test_run():
     gfweather().start_today_info(is_test=True)
 
 if __name__ == '__main__':
-    #test_run()
-    run()
+    test_run()
+    #run()
 
 
 
